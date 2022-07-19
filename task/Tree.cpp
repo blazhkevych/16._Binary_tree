@@ -1,105 +1,106 @@
-#include <iostream>
+п»ї#include <iostream>
+#include <io.h>
 #include "tree.h"
 using std::cout;
 using std::endl;
 
 Tree::Tree()
 {
-	root = nullptr;
-	count = 0;
+	m_root = nullptr;
+	m_count = 0;
 }
 
 Tree::~Tree()
 {
-	while (root != nullptr)
-		Del(root);
+	while (m_root != nullptr)
+		Del(m_root);
 }
 
-// Рекурсивный обход дерева
-void Tree::Print(Elem* Node)
+// Р РµРєСѓСЂСЃРёРІРЅС‹Р№ РѕР±С…РѕРґ РґРµСЂРµРІР°
+void Tree::Print(Elem* node)
 {
-	if (Node != nullptr)
+	if (node != nullptr)
 	{
-		Print(Node->left);
-		cout << Node->eng << " \t\t" << Node->rus << endl;
-		Print(Node->right);
+		Print(node->m_left);
+		cout << node->m_eng << " \t\t" << node->m_rus << endl;
+		Print(node->m_right);
 	}
 }
 
-Elem* Tree::Search(Elem* Node, char* k)
+Elem* Tree::Search(Elem* node, char* k)
 {
-	// Пока есть узлы и ключи не совпадают
-	while (Node != nullptr && strcmp(k, Node->eng) != 0)
+	// РџРѕРєР° РµСЃС‚СЊ СѓР·Р»С‹ Рё РєР»СЋС‡Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚
+	while (node != nullptr && strcmp(k, node->m_eng) != 0)
 	{
-		if (strcmp(k, Node->eng) < 0)
-			Node = Node->left;
+		if (strcmp(k, node->m_eng) < 0)
+			node = node->m_left;
 		else
-			Node = Node->right;
+			node = node->m_right;
 	}
-	return Node;
+	return node;
 }
 
-Elem* Tree::Min(Elem* Node)
+Elem* Tree::Min(Elem* node)
 {
-	// Поиск самого "левого" узла
-	if (Node != nullptr)
-		while (Node->left != nullptr)
-			Node = Node->left;
+	// РџРѕРёСЃРє СЃР°РјРѕРіРѕ "Р»РµРІРѕРіРѕ" СѓР·Р»Р°
+	if (node != nullptr)
+		while (node->m_left != nullptr)
+			node = node->m_left;
 
-	return Node;
+	return node;
 }
 
-Elem* Tree::Max(Elem* Node)
+Elem* Tree::Max(Elem* node)
 {
-	// Поиск самого "правого" узла
-	if (Node != nullptr)
-		while (Node->right != nullptr)
-			Node = Node->right;
+	// РџРѕРёСЃРє СЃР°РјРѕРіРѕ "РїСЂР°РІРѕРіРѕ" СѓР·Р»Р°
+	if (node != nullptr)
+		while (node->m_right != nullptr)
+			node = node->m_right;
 
-	return Node;
+	return node;
 }
 
-Elem* Tree::Next(Elem* Node)
+Elem* Tree::Next(Elem* node)
 {
 	Elem* y = nullptr;
-	if (Node != nullptr)
+	if (node != nullptr)
 	{
-		// если есть правый потомок
-		if (Node->right != nullptr)
-			// Следующий узел - самый "левый узел" в правом поддереве 
-			return Min(Node->right);
+		// РµСЃР»Рё РµСЃС‚СЊ РїСЂР°РІС‹Р№ РїРѕС‚РѕРјРѕРє
+		if (node->m_right != nullptr)
+			// РЎР»РµРґСѓСЋС‰РёР№ СѓР·РµР» - СЃР°РјС‹Р№ "Р»РµРІС‹Р№ СѓР·РµР»" РІ РїСЂР°РІРѕРј РїРѕРґРґРµСЂРµРІРµ 
+			return Min(node->m_right);
 
-		// родитель узла
-		y = Node->parent;
-		// если Node не корень и Node справа
-		while (y != 0 && Node == y->right)
+		// СЂРѕРґРёС‚РµР»СЊ СѓР·Р»Р°
+		y = node->m_parent;
+		// РµСЃР»Рё node РЅРµ РєРѕСЂРµРЅСЊ Рё node СЃРїСЂР°РІР°
+		while (y != 0 && node == y->m_right)
 		{
-			// Движемся вверх
-			Node = y;
-			y = y->parent;
+			// Р”РІРёР¶РµРјСЃСЏ РІРІРµСЂС…
+			node = y;
+			y = y->m_parent;
 		}
 	}
 	return y;
 }
 
-Elem* Tree::Previous(Elem* Node)
+Elem* Tree::Previous(Elem* node)
 {
 	Elem* y = nullptr;
-	if (Node != nullptr)
+	if (node != nullptr)
 	{
-		// если есть левый потомок
-		if (Node->left != nullptr)
-			// Предыдущий узел - самый "правый" узел в левом поддереве 
-			return Max(Node->left);
+		// РµСЃР»Рё РµСЃС‚СЊ Р»РµРІС‹Р№ РїРѕС‚РѕРјРѕРє
+		if (node->m_left != nullptr)
+			// РџСЂРµРґС‹РґСѓС‰РёР№ СѓР·РµР» - СЃР°РјС‹Р№ "РїСЂР°РІС‹Р№" СѓР·РµР» РІ Р»РµРІРѕРј РїРѕРґРґРµСЂРµРІРµ 
+			return Max(node->m_left);
 
-		// родитель узла
-		y = Node->parent;
-		// если Node не корень и Node слева
-		while (y != nullptr && Node == y->left)
+		// СЂРѕРґРёС‚РµР»СЊ СѓР·Р»Р°
+		y = node->m_parent;
+		// РµСЃР»Рё node РЅРµ РєРѕСЂРµРЅСЊ Рё node СЃР»РµРІР°
+		while (y != nullptr && node == y->m_left)
 		{
-			// Движемся вверх
-			Node = y;
-			y = y->parent;
+			// Р”РІРёР¶РµРјСЃСЏ РІРІРµСЂС…
+			node = y;
+			y = y->m_parent;
 		}
 	}
 	return y;
@@ -107,93 +108,134 @@ Elem* Tree::Previous(Elem* Node)
 
 Elem* Tree::GetRoot()
 {
-	return root;
+	return m_root;
 }
 
-// Сохранение данных дерева в файл.
-void Tree::Save(Elem* Node, FILE* f)
+// РЎРѕС…СЂР°РЅРµРЅРёРµ РґР°РЅРЅС‹С… РґРµСЂРµРІР° РІ С„Р°Р№Р».
+void Tree::SaveElemIntoFile(Elem* node, FILE* f_wright) // Р Р°Р·РјРµСЂ Р·Р°РїРёСЃР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р° СЃРѕРІРїР°РґР°РµС‚ СЃ СЂР°Р·РјРµСЂРѕРј Р·Р°РїРёСЃС‹РІР°РµРјС‹С… РјР°СЃСЃРёРІРѕРІ.
 {
-
+	if (node != nullptr)
+	{
+		SaveElemIntoFile(node->m_left, f_wright);
+		// СЃРїРѕСЃРѕР± СЃРѕС…СЂР°РЅРµРЅРёСЏ, СЃРєРѕСЂРµРµ Р±РёРЅР°СЂРЅС‹Р№
+		fwrite(node->m_eng, sizeof(node->m_eng), 1, f_wright);
+		fwrite(node->m_rus, sizeof(node->m_rus), 1, f_wright);
+		SaveElemIntoFile(node->m_right, f_wright);
+	}
 }
 
-// Загрузка данных из файла.
-void Tree::Load(Elem* Node, FILE* f)
+// Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С… РёР· С„Р°Р№Р»Р°.
+void Tree::LoadElemFromFile(Elem* node, FILE* f_read)
 {
+	Elem* temp = new Elem;
+	const int lenght = _filelength(_fileno(f_read));
+	const int numElementsInFile = lenght / (sizeof(temp->m_eng) + sizeof(temp->m_rus));
+	Elem* elemArr = new Elem[numElementsInFile];
+	for (int i = 0; i < numElementsInFile; i++)
+	{
+		fread(&temp->m_eng, sizeof(temp->m_eng), 1, f_read);
+		fread(&temp->m_rus, sizeof(temp->m_rus), 1, f_read);
+		elemArr[i] = *temp;
+	}
 
+	Р’alancing(elemArr, 0, numElementsInFile - 1);
+
+	delete[]elemArr;
 }
 
-// Балансировка бинарного дерева.
-void Tree::Вalancing()
+// Р‘Р°Р»Р°РЅСЃРёСЂРѕРІРєР° Р±РёРЅР°СЂРЅРѕРіРѕ РґРµСЂРµРІР°.
+void Tree::Р’alancing(Elem* node, int leftBorder, int rightBorder)
 {
+	if (leftBorder <= rightBorder)
+	{
+		Elem* temp = new Elem; // Р’С‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ РїРѕРґ РЅРѕРІС‹Р№ РЅРѕРґ, РєРѕС‚РѕСЂС‹Р№ РѕС‚РїСЂР°РІРёРј РІ Insert();
+		int middle = (leftBorder + rightBorder) / 2;
+		temp = node + middle; // СЃР»РµРґ Р·Р°С…РѕРґ РёРґРµС‚ СЃ РЅРѕРІС‹Рј РµР»РµРјРµРЅС‚РѕРј РёР»Рё РЅР°С‡Р°Р»СЊРЅС‹Рј ?!?!?!?!?
+		Insert(temp);
+		rightBorder = middle;
+		Р’alancing(node, leftBorder, rightBorder);
+	}
+
+	/*
+	 0 apple
+	 1 book		2 РёС‚РµСЂ., (0+1)/2=0  Р’РЎРўРђР’Р›РЇР•Рњ, Р’alancing(0 apple, 0, 0), РїРѕС‚РµСЂСЏР» cat !
+	 2 cat
+	 3 dog		1 РёС‚РµСЂ., (0+6)/2=3 Р’РЎРўРђР’Р›РЇР•Рњ, Р’alancing(0 apple, 0, 3), СЃРµСЂРµРґРёРЅР° = (0+3)/2 = 1,5 = 1
+	 4 girl
+	 5 hair
+	 6 man
+
+	 apple - man = dog
+	 */
 
 }
 
 void Tree::Insert(Elem* z)
 {
-	// потомков нет
-	z->left = nullptr;
-	z->right = nullptr;
+	// РїРѕС‚РѕРјРєРѕРІ РЅРµС‚
+	z->m_left = nullptr;
+	z->m_right = nullptr;
 
-	Elem* y = nullptr; // родитель вставляемого элемента
-	Elem* Node = root;
+	Elem* y = nullptr; // СЂРѕРґРёС‚РµР»СЊ РІСЃС‚Р°РІР»СЏРµРјРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+	Elem* node = m_root;
 
-	// поиск места
-	while (Node != nullptr)
+	// РїРѕРёСЃРє РјРµСЃС‚Р°
+	while (node != nullptr)
 	{
-		// будущий родитель
-		y = Node;
-		if (strcmp(z->eng, Node->eng) < 0)
-			Node = Node->left;
+		// Р±СѓРґСѓС‰РёР№ СЂРѕРґРёС‚РµР»СЊ
+		y = node;
+		if (strcmp(z->m_eng, node->m_eng) < 0)
+			node = node->m_left;
 		else
-			Node = Node->right;
+			node = node->m_right;
 	}
-	// заполняем родителя
-	z->parent = y;
+	// Р·Р°РїРѕР»РЅСЏРµРј СЂРѕРґРёС‚РµР»СЏ
+	z->m_parent = y;
 
-	if (y == nullptr) // элемент первый (единственный)
-		root = z;
-	// чей ключ больше?
-	else if (strcmp(z->eng, y->eng) < 0)
-		y->left = z;
+	if (y == nullptr) // СЌР»РµРјРµРЅС‚ РїРµСЂРІС‹Р№ (РµРґРёРЅСЃС‚РІРµРЅРЅС‹Р№)
+		m_root = z;
+	// С‡РµР№ РєР»СЋС‡ Р±РѕР»СЊС€Рµ?
+	else if (strcmp(z->m_eng, y->m_eng) < 0)
+		y->m_left = z;
 	else
-		y->right = z;
-	count++;
+		y->m_right = z;
+	m_count++;
 }
 
 void Tree::Del(Elem* z)
 {
 	if (z != nullptr)
 	{
-		Elem* Node = nullptr; // дочерний узел для удаляемого узла
-		Elem* y = nullptr; // удаляемый узел
-		// не 2 потомка
-		if (z->left == nullptr || z->right == nullptr)
+		Elem* node = nullptr; // РґРѕС‡РµСЂРЅРёР№ СѓР·РµР» РґР»СЏ СѓРґР°Р»СЏРµРјРѕРіРѕ СѓР·Р»Р°
+		Elem* y = nullptr; // СѓРґР°Р»СЏРµРјС‹Р№ СѓР·РµР»
+		// РЅРµ 2 РїРѕС‚РѕРјРєР°
+		if (z->m_left == nullptr || z->m_right == nullptr)
 			y = z;
 		else
 			y = Next(z);
 
-		if (y->left != nullptr)
-			Node = y->left;
+		if (y->m_left != nullptr)
+			node = y->m_left;
 		else
-			Node = y->right;
-		// Если удаляется не лист
-		if (Node != nullptr)
-			Node->parent = y->parent;
-		// Удаляется корневой узел?
-		if (y->parent == nullptr)
-			root = Node;
-		else if (y == y->parent->left) // слева от родителя?
-			y->parent->left = Node;
+			node = y->m_right;
+		// Р•СЃР»Рё СѓРґР°Р»СЏРµС‚СЃСЏ РЅРµ Р»РёСЃС‚
+		if (node != nullptr)
+			node->m_parent = y->m_parent;
+		// РЈРґР°Р»СЏРµС‚СЃСЏ РєРѕСЂРЅРµРІРѕР№ СѓР·РµР»?
+		if (y->m_parent == nullptr)
+			m_root = node;
+		else if (y == y->m_parent->m_left) // СЃР»РµРІР° РѕС‚ СЂРѕРґРёС‚РµР»СЏ?
+			y->m_parent->m_left = node;
 		else
-			y->parent->right = Node;  // справа от родителя?
+			y->m_parent->m_right = node;  // СЃРїСЂР°РІР° РѕС‚ СЂРѕРґРёС‚РµР»СЏ?
 
 		if (y != z)
 		{
-			// Копирование данных узла
-			strcpy_s(z->eng, y->eng);
-			strcpy_s(z->rus, y->rus);
+			// РљРѕРїРёСЂРѕРІР°РЅРёРµ РґР°РЅРЅС‹С… СѓР·Р»Р°
+			strcpy_s(z->m_eng, y->m_eng);
+			strcpy_s(z->m_rus, y->m_rus);
 		}
 		delete y;
-		count--;
+		m_count--;
 	}
 }

@@ -1,46 +1,46 @@
-#pragma once
+п»ї#pragma once
 
 struct Elem
 {
-	char eng[15]; // Ключ.
-	char rus[15]; // Значение.
-	Elem* left/*левый потомок*/, * right/*правый потомок*/, * parent/*родитель*/;
+	char m_eng[15]; // РљР»СЋС‡.
+	char m_rus[15]; // Р—РЅР°С‡РµРЅРёРµ.
+	Elem* m_left/*Р»РµРІС‹Р№ РїРѕС‚РѕРјРѕРє*/, * m_right/*РїСЂР°РІС‹Р№ РїРѕС‚РѕРјРѕРє*/, * m_parent/*СЂРѕРґРёС‚РµР»СЊ*/;
 };
 
 class Tree
 {
-	// Корень.
-	Elem* root;
-	// Количество узлов.
-	int count;
+	// РљРѕСЂРµРЅСЊ.
+	Elem* m_root;
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ СѓР·Р»РѕРІ.
+	int m_count;
 public:
 	Tree();
 	~Tree();
-	// Печать от указанного узла.
-	void Print(Elem* Node);
-	// Поиск от указанного узла.
-	Elem* Search(Elem* Node, char* key);
-	// min от указанного узла.
-	Elem* Min(Elem* Node);
-	// max от указанного узла.
-	Elem* Max(Elem* Node);
-	// Следующий для указанного узла.
-	Elem* Next(Elem* Node);
-	// Предыдущий для указанного узла.
-	Elem* Previous(Elem* Node);
-	// Вставка узла.
+	// РџРµС‡Р°С‚СЊ РѕС‚ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°.
+	void Print(Elem* node);
+	// РџРѕРёСЃРє РѕС‚ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°.
+	Elem* Search(Elem* node, char* key);
+	// min РѕС‚ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°.
+	Elem* Min(Elem* node);
+	// max РѕС‚ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°.
+	Elem* Max(Elem* node);
+	// РЎР»РµРґСѓСЋС‰РёР№ РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°.
+	Elem* Next(Elem* node);
+	// РџСЂРµРґС‹РґСѓС‰РёР№ РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°.
+	Elem* Previous(Elem* node);
+	// Р’СЃС‚Р°РІРєР° СѓР·Р»Р°.
 	void Insert(Elem* z);
-	// Удаление ветки для указанного узла.
+	// РЈРґР°Р»РµРЅРёРµ РІРµС‚РєРё РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ СѓР·Р»Р°.
 	void Del(Elem* z);
-	// Количество узлов дерева.
-	int GetCount() { return count; }
-	// Получить корень.
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ СѓР·Р»РѕРІ РґРµСЂРµРІР°.
+	int GetCount() { return m_count; }
+	// РџРѕР»СѓС‡РёС‚СЊ РєРѕСЂРµРЅСЊ.
 	Elem* GetRoot();
 
-	// Сохранение данных дерева в файл.
-	void Save(Elem* Node, FILE* f);
-	// Загрузка данных из файла.
-	void Load(Elem* Node, FILE* f);
-	// Балансировка бинарного дерева.
-	void Вalancing();
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ РґР°РЅРЅС‹С… РґРµСЂРµРІР° РІ С„Р°Р№Р».
+	void SaveElemIntoFile(Elem* node, FILE* f);
+	// Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С… РёР· С„Р°Р№Р»Р°.
+	void LoadElemFromFile(Elem* node, FILE* f);
+	// Р‘Р°Р»Р°РЅСЃРёСЂРѕРІРєР° Р±РёРЅР°СЂРЅРѕРіРѕ РґРµСЂРµРІР°.
+	void Р’alancing(Elem* node, int leftBorder, int rightBorder);
 };
